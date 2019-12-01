@@ -10,22 +10,19 @@ echo -n "email: "
 read -r EMAIL
 
 # create the user
-sudo useradd -m -G hackers -s /usr/bin/zsh "$USERNAME"
+sudo useradd -m -G hackers -s /usr/bin/fish "$USERNAME"
 echo "$USERNAME" >> /shared/hackers.txt
 yq w --inplace /shared/git-authors authors."$USERNAME" "$FULLNAME"
 yq w --inplace /shared/git-authors email_addresses."$USERNAME" "$EMAIL"
 
 # do their setup
-sudo su --login "$USERNAME" -c "/shared/hacker-setup.sh"
-
-# change their shell
-sudo chsh -s /usr/bin/fish "$USERNAME"
+sudo su --login "$USERNAME" -c "/shared/pairing-scripts/hacker-setup.sh"
 
 # expire their password
 sudo passwd -de "$USERNAME"
 
 # create shared directories with all the other hackers
-cat << EOF | python
+cat << EOF | python3
 import itertools, os, shutil, stat
 
 with open("/shared/hackers.txt") as f:

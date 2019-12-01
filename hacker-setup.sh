@@ -10,4 +10,4 @@ chmod -R go-rwx ~/.ssh
 
 ln -sf /shared/git-authors ~/.git-authors
 
-make -C /shared/dotfiles base
+make -C /shared/dotfiles
